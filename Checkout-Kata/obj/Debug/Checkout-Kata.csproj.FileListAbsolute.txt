@@ -1,0 +1,7 @@
+C:\work\Checkout-Kata\Checkout-Kata\bin\Debug\Checkout-Kata.dll
+C:\work\Checkout-Kata\Checkout-Kata\bin\Debug\Checkout-Kata.pdb
+C:\work\Checkout-Kata\Checkout-Kata\bin\Debug\nunit.framework.dll
+C:\work\Checkout-Kata\Checkout-Kata\bin\Debug\nunit.framework.xml
+C:\work\Checkout-Kata\Checkout-Kata\obj\Debug\Checkout-Kata.csprojResolveAssemblyReference.cache
+C:\work\Checkout-Kata\Checkout-Kata\obj\Debug\Checkout-Kata.dll
+C:\work\Checkout-Kata\Checkout-Kata\obj\Debug\Checkout-Kata.pdb
