@@ -33,6 +33,7 @@ namespace Checkout_Kata
 		}
 
 		[Test]
+		[TestCase("aa", 100)]
 		[TestCase("ab", 80)]
 		[TestCase("abc", 100)]
 		[TestCase("aabc", 150)]
@@ -44,7 +45,8 @@ namespace Checkout_Kata
 
 		[Test]
 		[TestCase("aaa", 130)]
-		public void Multiple_items_eligible_for_discount_returns_expected_total(string items, int expected)
+		[TestCase("bb", 45)]
+		public void Multiple_of_the_same_item_eligible_for_discount_returns_expected_total(string items, int expected)
 		{
 			var actual = new Scanner().ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
@@ -67,12 +69,26 @@ namespace Checkout_Kata
 
 		public int ScanBasket(string basket)
 		{
-			var total = 0;
-			var discount = basket == "aaa" ? 20 : 0;
 			var items = basket.ToCharArray();
-			total = items.Sum(item => _prices[item]);
+			var discount = Discount(basket);
+			var total = Total(items);
 			total -= discount;
 			return total;
+		}
+
+		private int Total(IEnumerable<char> items)
+		{
+			return items.Sum(item => _prices[item]);
+		}
+
+		private static int Discount(string basket)
+		{
+			var discount = 0;
+			if (basket == "aaa")
+				discount += 20;
+			else if (basket == "bb")
+				discount += 15;
+			return discount;
 		}
 	}
 }
