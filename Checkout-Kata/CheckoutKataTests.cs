@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -8,17 +7,24 @@ namespace Checkout_Kata
 	[TestFixture]
 	public class CheckoutKataTests
 	{
+		private readonly Dictionary<char, int> _prices = new Dictionary<char, int>
+		{
+			{'a', 50},
+			{'b', 30},
+			{'c', 20}
+		};
+
 		[Test]
 		public void Scan_no_items_returns_0()
 		{
-			var actual = new Scanner().Scan();
+			var actual = new Cashier(_prices).Scan();
 			Assert.That(actual, Is.EqualTo(0));
 		}
 
 		[Test]
 		public void Scan_empty_string_returns_0()
 		{
-			var actual = new Scanner().ScanBasket(string.Empty);
+			var actual = new Cashier(_prices).ScanBasket(string.Empty);
 			Assert.That(actual, Is.EqualTo(0));
 		}
 
@@ -28,7 +34,7 @@ namespace Checkout_Kata
 		[TestCase("c", 20)]
 		public void Scan_returns_expected_price_for_item(string items, int expected)
 		{
-			var actual = new Scanner().ScanBasket(items);
+			var actual = new Cashier(_prices).ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
@@ -39,7 +45,7 @@ namespace Checkout_Kata
 		[TestCase("aabc", 150)]
 		public void Multiple_items_ineligible_for_discount_returns_expected_total(string items, int expected)
 		{
-			var actual = new Scanner().ScanBasket(items);
+			var actual = new Cashier(_prices).ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
@@ -47,9 +53,10 @@ namespace Checkout_Kata
 		[TestCase("aaa", 130)]
 		[TestCase("aaaaaa", 260)]
 		[TestCase("bb", 45)]
+		[TestCase("bbbb", 90)]
 		public void Multiple_of_the_same_item_eligible_for_discount_returns_expected_total(string items, int expected)
 		{
-			var actual = new Scanner().ScanBasket(items);
+			var actual = new Cashier(_prices).ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
@@ -57,19 +64,19 @@ namespace Checkout_Kata
 		[TestCase("aaab", 160)]
 		public void Multiple_items_eligible_for_discount_returns_expected_total(string items, int expected)
 		{
-			var actual = new Scanner().ScanBasket(items);
+			var actual = new Cashier(_prices).ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 	}
 
-	class Scanner
+	class Cashier
 	{
-		private readonly Dictionary<char, int> _prices = new Dictionary<char, int>
-			{
-				{'a', 50},
-				{'b', 30},
-				{'c', 20}
-			};
+		private readonly Dictionary<char, int> _prices;
+
+		public Cashier(Dictionary<char, int> prices)
+		{
+			_prices = prices;
+		}
 
 		public int Scan()
 		{
@@ -92,9 +99,9 @@ namespace Checkout_Kata
 			var discount = 0;
 			var items = basket.ToCharArray();
 			var numberOfAs = items.Count(item => item == 'a');
-			discount += numberOfAs/3*20;
-			if (basket == "bb")
-				discount += 15;
+			discount += numberOfAs / 3 * 20;
+			var numberOfBs = items.Count(item => item == 'b');
+			discount += numberOfBs / 2 * 15;
 			return discount;
 		}
 	}
