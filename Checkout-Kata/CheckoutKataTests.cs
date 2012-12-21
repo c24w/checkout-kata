@@ -69,15 +69,12 @@ namespace Checkout_Kata
 
 		public int ScanBasket(string basket)
 		{
-			var items = basket.ToCharArray();
-			var discount = Discount(basket);
-			var total = Total(items);
-			total -= discount;
-			return total;
+			return Total(basket) - Discount(basket);
 		}
 
-		private int Total(IEnumerable<char> items)
+		private int Total(string basket)
 		{
+			var items = basket.ToCharArray();
 			return items.Sum(item => _prices[item]);
 		}
 
