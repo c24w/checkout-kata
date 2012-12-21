@@ -6,6 +6,11 @@ namespace Checkout_Kata
 	internal class Cashier
 	{
 		private readonly Dictionary<char, int> _prices;
+		private readonly Dictionary<char, int> _discountQuantity = new Dictionary<char, int>
+		{
+			{'a',3},
+			{'b',2}
+		};
 		private readonly Dictionary<char, int> _discountValue = new Dictionary<char, int>
 		{
 			{'a',20},
@@ -36,15 +41,15 @@ namespace Checkout_Kata
 		private int Discount(string basket)
 		{
 			var discount = 0;
-			discount += DiscountItem(basket, 'a', 3);
-			discount += DiscountItem(basket, 'b', 2);
+			foreach (var item in _discountQuantity.Keys)
+				discount += DiscountItem(basket, item);
 			return discount;
 		}
 
-		private int DiscountItem(string basket, char discountItem, int discountQuantity)
+		private int DiscountItem(string basket, char discountItem)
 		{
 			var numberOfItem = basket.Count(item => item == discountItem);
-			return numberOfItem / discountQuantity * _discountValue[discountItem];
+			return numberOfItem / _discountQuantity[discountItem] * _discountValue[discountItem];
 		}
 	}
 }
