@@ -33,6 +33,8 @@ namespace Checkout_Kata
 
 		[Test]
 		[TestCase("ab", 80)]
+		[TestCase("abc", 100)]
+		[TestCase("aabc", 150)]
 		public void Multiple_items_ineligible_for_discount_returns_expected_total(string items, int expected)
 		{
 			var actual = new Scanner().ScanBasket(items);
