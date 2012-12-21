@@ -11,7 +11,8 @@ namespace Checkout_Kata
 		{
 			{'a', 50},
 			{'b', 30},
-			{'c', 20}
+			{'c', 20},
+			{'d', 15}
 		};
 
 		[Test]
@@ -32,6 +33,7 @@ namespace Checkout_Kata
 		[TestCase("a", 50)]
 		[TestCase("b", 30)]
 		[TestCase("c", 20)]
+		[TestCase("d", 15)]
 		public void Scan_returns_expected_price_for_item(string items, int expected)
 		{
 			var actual = new Cashier(_prices).ScanBasket(items);
