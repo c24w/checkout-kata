@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 
 namespace Checkout_Kata
@@ -66,52 +65,11 @@ namespace Checkout_Kata
 		[TestCase("aaab", 160)]
 		[TestCase("abb", 95)]
 		[TestCase("aaaaaabb", 305)]
-		[TestCase("bbbbac", 160)]
+		[TestCase("bbbbacd", 175)]
 		public void Multiple_items_eligible_for_discount_returns_expected_total(string items, int expected)
 		{
 			var actual = new Cashier(_prices).ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
-	}
-
-	class Cashier
-	{
-		private readonly Dictionary<char, int> _prices;
-
-		public Cashier(Dictionary<char, int> prices)
-		{
-			_prices = prices;
-		}
-
-		public int Scan()
-		{
-			return 0;
-		}
-
-		public int ScanBasket(string basket)
-		{
-			return Total(basket) - Discount(basket);
-		}
-
-		private int Total(string basket)
-		{
-			var items = basket.ToCharArray();
-			return items.Sum(item => _prices[item]);
-		}
-
-		private int Discount(string basket)
-		{
-			var discount = 0;
-			discount += DiscountItem(basket, 'a', 3, 20);
-			discount += DiscountItem(basket, 'b', 2, 15);
-			return discount;
-		}
-
-		private static int DiscountItem(string basket, char discountItem, int discountQuantity, int discountAmount)
-		{
-			var numberOfItems = basket.Count(item => item == discountItem);
-			return numberOfItems / discountQuantity * discountAmount;
-		}
-
 	}
 }
