@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 namespace Checkout_Kata
@@ -14,12 +15,27 @@ namespace Checkout_Kata
 		}
 
 		[Test]
-		[TestCase('a', 50)]
-		[TestCase('b', 30)]
-		[TestCase('c', 20)]
-		public void Scan_should_return_expected_price_for_item(char item, int expected)
+		public void Scan_empty_string_returns_0()
 		{
-			var actual = new Scanner().Scan(item);
+			var actual = new Scanner().ScanBasket(string.Empty);
+			Assert.That(actual, Is.EqualTo(0));
+		}
+
+		[Test]
+		[TestCase("a", 50)]
+		[TestCase("b", 30)]
+		[TestCase("c", 20)]
+		public void Scan_returns_expected_price_for_item(string items, int expected)
+		{
+			var actual = new Scanner().ScanBasket(items);
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		[Test]
+		[TestCase("ab", 80)]
+		public void Multiple_items_ineligible_for_discount_returns_expected_total(string items, int expected)
+		{
+			var actual = new Scanner().ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 	}
@@ -38,9 +54,11 @@ namespace Checkout_Kata
 			return 0;
 		}
 
-		public int Scan(char item)
+		public int ScanBasket(string basket)
 		{
-			return _prices[item];
+			if (basket == string.Empty) return 0;
+			var items = basket.ToCharArray();
+			return items.Sum(item => _prices[item]);
 		}
 	}
 }
