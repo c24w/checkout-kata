@@ -45,8 +45,17 @@ namespace Checkout_Kata
 
 		[Test]
 		[TestCase("aaa", 130)]
+		[TestCase("aaaaaa", 260)]
 		[TestCase("bb", 45)]
 		public void Multiple_of_the_same_item_eligible_for_discount_returns_expected_total(string items, int expected)
+		{
+			var actual = new Scanner().ScanBasket(items);
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		[Test]
+		[TestCase("aaab", 160)]
+		public void Multiple_items_eligible_for_discount_returns_expected_total(string items, int expected)
 		{
 			var actual = new Scanner().ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
@@ -81,9 +90,10 @@ namespace Checkout_Kata
 		private static int Discount(string basket)
 		{
 			var discount = 0;
-			if (basket == "aaa")
-				discount += 20;
-			else if (basket == "bb")
+			var items = basket.ToCharArray();
+			var numberOfAs = items.Count(item => item == 'a');
+			discount += numberOfAs/3*20;
+			if (basket == "bb")
 				discount += 15;
 			return discount;
 		}
