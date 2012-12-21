@@ -62,6 +62,9 @@ namespace Checkout_Kata
 
 		[Test]
 		[TestCase("aaab", 160)]
+		[TestCase("abb", 95)]
+		[TestCase("aaaaaabb", 305)]
+		[TestCase("bbbbac", 160)]
 		public void Multiple_items_eligible_for_discount_returns_expected_total(string items, int expected)
 		{
 			var actual = new Cashier(_prices).ScanBasket(items);
@@ -94,15 +97,19 @@ namespace Checkout_Kata
 			return items.Sum(item => _prices[item]);
 		}
 
-		private static int Discount(string basket)
+		private int Discount(string basket)
 		{
 			var discount = 0;
-			var items = basket.ToCharArray();
-			var numberOfAs = items.Count(item => item == 'a');
-			discount += numberOfAs / 3 * 20;
-			var numberOfBs = items.Count(item => item == 'b');
-			discount += numberOfBs / 2 * 15;
+			discount += DiscountItem(basket, 'a', 3, 20);
+			discount += DiscountItem(basket, 'b', 2, 15);
 			return discount;
 		}
+
+		private static int DiscountItem(string basket, char discountItem, int discountQuantity, int discountAmount)
+		{
+			var numberOfItems = basket.Count(item => item == discountItem);
+			return numberOfItems / discountQuantity * discountAmount;
+		}
+
 	}
 }
