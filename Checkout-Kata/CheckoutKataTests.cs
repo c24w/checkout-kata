@@ -14,17 +14,33 @@ namespace Checkout_Kata
 			{'d', 15}
 		};
 
+		private readonly IEnumerable<ItemDiscounter> _discounters = new[]
+		{
+			new ItemDiscounter
+				{
+					ItemCode = 'a',
+					DiscountQuantity = 3,
+					DiscountValue = 20
+				},
+			new ItemDiscounter
+				{
+					ItemCode = 'b',
+					DiscountQuantity = 2,
+					DiscountValue = 15
+				}
+		};
+
 		[Test]
 		public void Scan_no_items_returns_0()
 		{
-			var actual = new Cashier(_prices).Scan();
+			var actual = new Cashier(_prices, _discounters).Scan();
 			Assert.That(actual, Is.EqualTo(0));
 		}
 
 		[Test]
 		public void Scan_empty_string_returns_0()
 		{
-			var actual = new Cashier(_prices).ScanBasket(string.Empty);
+			var actual = new Cashier(_prices, _discounters).ScanBasket(string.Empty);
 			Assert.That(actual, Is.EqualTo(0));
 		}
 
@@ -35,7 +51,7 @@ namespace Checkout_Kata
 		[TestCase("d", 15)]
 		public void Scan_returns_expected_price_for_item(string items, int expected)
 		{
-			var actual = new Cashier(_prices).ScanBasket(items);
+			var actual = new Cashier(_prices, _discounters).ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
@@ -46,7 +62,7 @@ namespace Checkout_Kata
 		[TestCase("aabc", 150)]
 		public void Multiple_items_ineligible_for_discount_returns_expected_total(string items, int expected)
 		{
-			var actual = new Cashier(_prices).ScanBasket(items);
+			var actual = new Cashier(_prices, _discounters).ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
@@ -57,7 +73,7 @@ namespace Checkout_Kata
 		[TestCase("bbbb", 90)]
 		public void Multiple_of_the_same_item_eligible_for_discount_returns_expected_total(string items, int expected)
 		{
-			var actual = new Cashier(_prices).ScanBasket(items);
+			var actual = new Cashier(_prices, _discounters).ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
@@ -68,7 +84,7 @@ namespace Checkout_Kata
 		[TestCase("bbbbacd", 175)]
 		public void Multiple_items_eligible_for_discount_returns_expected_total(string items, int expected)
 		{
-			var actual = new Cashier(_prices).ScanBasket(items);
+			var actual = new Cashier(_prices, _discounters).ScanBasket(items);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 	}
