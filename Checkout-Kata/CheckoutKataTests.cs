@@ -26,6 +26,13 @@ namespace Checkout_Kata
 
 	class Scanner
 	{
+		private readonly Dictionary<char, int> _prices = new Dictionary<char, int>
+			{
+				{'a', 50},
+				{'b', 30},
+				{'c', 20}
+			};
+
 		public int Scan()
 		{
 			return 0;
@@ -33,11 +40,7 @@ namespace Checkout_Kata
 
 		public int Scan(char item)
 		{
-			if (item == 'b')
-				return 30;
-			if (item == 'c')
-				return 20;
-			return 50;
+			return _prices[item];
 		}
 	}
 }
