@@ -14,15 +14,15 @@ namespace Checkout_Kata
 			{'d', 15}
 		};
 
-		private readonly IEnumerable<ItemDiscounter> _discounters = new[]
+		private readonly IEnumerable<ItemDiscount> _discounters = new[]
 		{
-			new ItemDiscounter
+			new ItemDiscount
 				{
 					ItemCode = 'a',
 					DiscountQuantity = 3,
 					DiscountValue = 20
 				},
-			new ItemDiscounter
+			new ItemDiscount
 				{
 					ItemCode = 'b',
 					DiscountQuantity = 2,
@@ -33,7 +33,7 @@ namespace Checkout_Kata
 		[Test]
 		public void Scan_no_items_returns_0()
 		{
-			var actual = new Cashier(_prices, _discounters).Scan();
+			var actual = new Cashier(_prices, _discounters).ScanBasket();
 			Assert.That(actual, Is.EqualTo(0));
 		}
 

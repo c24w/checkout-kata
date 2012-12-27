@@ -5,21 +5,16 @@ namespace Checkout_Kata
 {
 	internal class Cashier
 	{
-		private readonly Dictionary<char, int> _prices;
-		private readonly IEnumerable<ItemDiscounter> _discounters;	
+		private readonly Dictionary<char, int> _itemPrices;
+		private readonly IEnumerable<IItemDiscount> _itemDiscounts;	
 
-		public Cashier(Dictionary<char, int> prices, IEnumerable<ItemDiscounter> discounters)
+		public Cashier(Dictionary<char, int> itemPrices, IEnumerable<IItemDiscount> itemDiscounts)
 		{
-			_prices = prices;
-			_discounters = discounters;
+			_itemPrices = itemPrices;
+			_itemDiscounts = itemDiscounts;
 		}
 
-		public int Scan()
-		{
-			return 0;
-		}
-
-		public int ScanBasket(string basket)
+		public int ScanBasket(string basket = "")
 		{
 			return Total(basket) - Discount(basket);
 		}
@@ -27,18 +22,18 @@ namespace Checkout_Kata
 		private int Total(string basket)
 		{
 			var items = basket.ToCharArray();
-			return items.Sum(item => _prices[item]);
+			return items.Sum(item => _itemPrices[item]);
 		}
 
 		private int Discount(string basket)
 		{
-			return _discounters.Sum(discounter => DiscountItem(basket, discounter));
+			return _itemDiscounts.Sum(itemDiscount => CalculateItemDiscount(basket, itemDiscount));
 		}
 
-		private int DiscountItem(string basket, ItemDiscounter discounter)
+		private static int CalculateItemDiscount(string basket, IItemDiscount discount)
 		{
-			var itemCount = basket.Count(item => item == discounter.ItemCode);
-			return itemCount / discounter.DiscountQuantity * discounter.DiscountValue;
+			var itemCount = basket.Count(item => item == discount.ItemCode);
+			return itemCount / discount.DiscountQuantity * discount.DiscountValue;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 namespace Checkout_Kata
 {
-	class ItemDiscounter
+	class ItemDiscount : IItemDiscount
 	{
 		public char ItemCode { get; set; }
 		public int DiscountQuantity { get; set; }

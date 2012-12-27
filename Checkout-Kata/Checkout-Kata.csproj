@@ -44,7 +44,8 @@
   <ItemGroup>
     <Compile Include="Cashier.cs" />
     <Compile Include="CheckoutKataTests.cs" />
-    <Compile Include="ItemDiscounter.cs" />
+    <Compile Include="IItemDiscount.cs" />
+    <Compile Include="ItemDiscount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
