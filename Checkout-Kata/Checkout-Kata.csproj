@@ -45,7 +45,9 @@
     <Compile Include="Cashier.cs" />
     <Compile Include="CheckoutKataTests.cs" />
     <Compile Include="IItemDiscount.cs" />
+    <Compile Include="IItemPrice.cs" />
     <Compile Include="ItemDiscount.cs" />
+    <Compile Include="ItemPrice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

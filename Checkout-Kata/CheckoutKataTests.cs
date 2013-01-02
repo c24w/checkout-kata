@@ -6,12 +6,12 @@ namespace Checkout_Kata
 	[TestFixture]
 	public class CheckoutKataTests
 	{
-		private readonly Dictionary<char, int> _prices = new Dictionary<char, int>
+		private readonly IEnumerable<ItemPrice> _prices = new []
 		{
-			{'a', 50},
-			{'b', 30},
-			{'c', 20},
-			{'d', 15}
+			new ItemPrice{ItemCode = 'a', Price = 50},
+			new ItemPrice{ItemCode = 'b', Price = 30},
+			new ItemPrice{ItemCode = 'c', Price = 20},
+			new ItemPrice{ItemCode = 'd', Price = 15}
 		};
 
 		private readonly IEnumerable<ItemDiscount> _discounters = new[]
