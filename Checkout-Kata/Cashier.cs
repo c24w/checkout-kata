@@ -1,39 +1,18 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Checkout_Kata
 {
-	internal class Cashier
+	class Cashier : ICashier
 	{
-		private readonly IEnumerable<ItemPrice> _prices;
-		private readonly IEnumerable<IItemDiscount> _discounts;
+		private readonly ICheckout _checkout;
 
-		public Cashier(IEnumerable<ItemPrice> prices, IEnumerable<IItemDiscount> discounts)
+		public Cashier(ICheckout checkout)
 		{
-			_prices = prices;
-			_discounts = discounts;
+			_checkout = checkout;
 		}
 
 		public int ScanBasket(string basket = "")
 		{
-			return Total(basket) - Discount(basket);
+			return _checkout.Total(basket) - _checkout.Discount(basket);
 		}
 
-		private int Total(string basket)
-		{
-			var items = basket.ToCharArray();
-			return items.Sum(item => _prices.Single(p => p.ItemCode == item).Price);
-		}
-
-		private int Discount(string basket)
-		{
-			return _discounts.Sum(itemDiscount => CalculateItemDiscount(basket, itemDiscount));
-		}
-
-		private static int CalculateItemDiscount(string basket, IItemDiscount discount)
-		{
-			var itemCount = basket.Count(item => item == discount.ItemCode);
-			return itemCount / discount.DiscountQuantity * discount.DiscountValue;
-		}
 	}
 }
